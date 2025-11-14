@@ -63,7 +63,6 @@ function handleTodoAction(event) {
 
     if (item.classList.contains('check-btn')) {
         todo.classList.toggle("completed");
-        // Bug: completed state not saved to localStorage
     }
 
     if (item.classList.contains('edit-btn')) {
@@ -137,7 +136,6 @@ function removeFromLocal(todo) {
 }
 
 function enterEditMode(todo) {
-    // Exit edit mode from any other todo item first
     const allTodos = document.querySelectorAll('.todo');
     allTodos.forEach(t => {
         if (t !== todo && t.classList.contains('editing')) {
@@ -148,20 +146,16 @@ function enterEditMode(todo) {
     const todoItem = todo.querySelector('.todo-item');
     const originalText = todoItem.innerText;
     
-    // Store original text in data attribute
     todo.setAttribute('data-original-text', originalText);
     
-    // Create input field
     const editInput = document.createElement('input');
     editInput.type = 'text';
     editInput.classList.add('edit-input');
     editInput.value = originalText;
     editInput.setAttribute('aria-label', 'Edit task text');
     
-    // Replace todo-item with input
     todoItem.replaceWith(editInput);
     
-    // Hide edit, check, and delete buttons
     const editBtn = todo.querySelector('.edit-btn');
     const checkBtn = todo.querySelector('.check-btn');
     const deleteBtn = todo.querySelector('.delete-btn');
@@ -170,28 +164,23 @@ function enterEditMode(todo) {
     checkBtn.style.display = 'none';
     deleteBtn.style.display = 'none';
     
-    // Create and add save button
     const saveBtn = document.createElement('button');
     saveBtn.innerHTML = '<i class="fas fa-save"></i>';
     saveBtn.classList.add('save-btn');
     saveBtn.setAttribute('aria-label', 'Save changes');
     todo.appendChild(saveBtn);
     
-    // Create and add cancel button
     const cancelBtn = document.createElement('button');
     cancelBtn.innerHTML = '<i class="fas fa-times"></i>';
     cancelBtn.classList.add('cancel-btn');
     cancelBtn.setAttribute('aria-label', 'Cancel editing');
     todo.appendChild(cancelBtn);
     
-    // Add editing class
     todo.classList.add('editing');
     
-    // Focus the input
     editInput.focus();
     editInput.select();
     
-    // Add keyboard event listeners
     editInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -212,24 +201,19 @@ function saveEdit(todo) {
         return;
     }
     
-    // Get original text to update localStorage
     const originalText = todo.getAttribute('data-original-text');
     
-    // Create new todo-item with updated text
     const newTodoItem = document.createElement('li');
     newTodoItem.innerText = newText;
     newTodoItem.classList.add('todo-item');
     
-    // Replace input with new todo-item
     editInput.replaceWith(newTodoItem);
     
-    // Remove save and cancel buttons
     const saveBtn = todo.querySelector('.save-btn');
     const cancelBtn = todo.querySelector('.cancel-btn');
     saveBtn.remove();
     cancelBtn.remove();
     
-    // Show edit, check, and delete buttons again
     const editBtn = todo.querySelector('.edit-btn');
     const checkBtn = todo.querySelector('.check-btn');
     const deleteBtn = todo.querySelector('.delete-btn');
@@ -238,11 +222,9 @@ function saveEdit(todo) {
     checkBtn.style.display = '';
     deleteBtn.style.display = '';
     
-    // Remove editing class
     todo.classList.remove('editing');
     todo.removeAttribute('data-original-text');
     
-    // Update localStorage
     updateLocalStorage(originalText, newText);
 }
 
@@ -250,21 +232,17 @@ function cancelEdit(todo) {
     const editInput = todo.querySelector('.edit-input');
     const originalText = todo.getAttribute('data-original-text');
     
-    // Create new todo-item with original text
     const newTodoItem = document.createElement('li');
     newTodoItem.innerText = originalText;
     newTodoItem.classList.add('todo-item');
     
-    // Replace input with original todo-item
     editInput.replaceWith(newTodoItem);
     
-    // Remove save and cancel buttons
     const saveBtn = todo.querySelector('.save-btn');
     const cancelBtn = todo.querySelector('.cancel-btn');
     saveBtn.remove();
     cancelBtn.remove();
     
-    // Show edit, check, and delete buttons again
     const editBtn = todo.querySelector('.edit-btn');
     const checkBtn = todo.querySelector('.check-btn');
     const deleteBtn = todo.querySelector('.delete-btn');
@@ -273,11 +251,9 @@ function cancelEdit(todo) {
     checkBtn.style.display = '';
     deleteBtn.style.display = '';
     
-    // Remove editing class
     todo.classList.remove('editing');
     todo.removeAttribute('data-original-text');
 }
-
 function updateLocalStorage(oldText, newText) {
     const todos = getTodosFromLocal();
     const todoIndex = todos.indexOf(oldText);
@@ -287,3 +263,4 @@ function updateLocalStorage(oldText, newText) {
         localStorage.setItem('todos', JSON.stringify(todos));
     }
 }
+
