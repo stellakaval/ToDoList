@@ -27,6 +27,21 @@
         <ul class="todo-list" aria-label="To-do list">
         </ul>
     </main>
+
+    <!-- Wheel Modal -->
+    <div id="wheel-modal" class="wheel-modal">
+        <div class="wheel-modal-content">
+            <span class="wheel-close">&times;</span>
+            <h2>Spin the Wheel!</h2>
+            <div class="wheel-container">
+                <canvas id="wheel-canvas" width="400" height="400"></canvas>
+                <div class="wheel-pointer"></div>
+            </div>
+            <div id="wheel-result" class="wheel-result"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="JS/main.js"></script>
 </body>
 </html>

@@ -108,7 +108,28 @@ form {
     padding: 0.5rem;
     font-size: 16px;
     white-space: nowrap;
-    overflow: visible;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.todo-item.scrollable {
+    overflow-x: auto;
+    text-overflow: clip;
+    white-space: nowrap;
+    cursor: grab;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.todo-item.scrollable::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.todo-item.scrollable:active {
+    cursor: grabbing;
 }
 
 .check-btn,
@@ -212,6 +233,149 @@ form {
     opacity: 0;
 }
 
+/* Wheel Button */
+.wheel-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+    font-size: 18px;
+    background: #9c27b0;
+    color: white;
+    flex-shrink: 0;
+}
+
+.wheel-btn:hover:not(:disabled) {
+    background: #7b1fa2;
+    transform: scale(1.1);
+}
+
+.wheel-btn:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.wheel-btn i {
+    pointer-events: none;
+}
+
+/* Wheel Modal */
+.wheel-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    animation: fadeIn 0.3s;
+}
+
+.wheel-modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.wheel-modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.3s;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.wheel-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.wheel-close:hover {
+    color: #000;
+}
+
+.wheel-modal-content h2 {
+    margin-bottom: 1.5rem;
+    color: #667eea;
+    font-size: 2rem;
+}
+
+.wheel-container {
+    position: relative;
+    display: inline-block;
+    margin: 2rem 0;
+}
+
+#wheel-canvas {
+    border-radius: 50%;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s linear;
+}
+
+.wheel-pointer {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 30px solid #f44336;
+    z-index: 10;
+}
+
+.wheel-result {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #667eea;
+    min-height: 2rem;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.wheel-result.show {
+    opacity: 1;
+}
+
 @media (max-width: 600px) {
     main {
         padding: 1.5rem;
@@ -228,5 +392,14 @@ form {
 
     .todo-btn {
         width: 100%;
+    }
+
+    .wheel-modal-content {
+        padding: 1.5rem;
+    }
+
+    #wheel-canvas {
+        width: 300px;
+        height: 300px;
     }
 }
